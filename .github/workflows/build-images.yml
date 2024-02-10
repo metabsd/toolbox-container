@@ -1,0 +1,76 @@
+name: CI
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    types:
+      - opened
+      - synchronize
+env:
+  REGISTRY: ghcr.io
+  ORGANIZATION: metabsd
+  IMAGE_NAME: ${{ github.repository }}
+  VALIDATE_ALL_CODEBASE: true
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Mega Linter
+      uses: oxsecurity/megalinter/flavors/security@v7
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-and-push-image:
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.ORGANIZATION }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          secret-envs: |
+            USERNAME=${{ secrets.BUILD_USERNAME_DOCKER }}
+            CONTAINER_USER=${{ secrets.BUILD_CONTAINER_USER }}
+            CONTAINER_GROUP=${{ secrets.BUILD_CONTAINER_GROUP }}
+            CONTAINER_UID=${{ secrets.BUILD_CONTAINER_UID }}
+            CONTAINER_GID=${{ secrets.BUILD_CONTAINER_GID }}
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
