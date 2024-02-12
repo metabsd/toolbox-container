@@ -194,12 +194,12 @@ setup-fish-env:
 	&& printf "✅ fish aliases moved\n"
 
 build-user-docker:
-	docker build . --tag ghcr.io/metabsd/toolbox-container --build-arg="USERNAME=${USER}"
+	docker build . --tag ghcr.io/metabsd/toolbox-container:main --build-arg="USERNAME=${USER}"
 
 run-user-docker:
 	docker run --rm -d -it -v ${HOME}/git_projects:${HOME}/git_projects -w ${HOME} \
 	-e TERM -e COLORTERM -e UPN=${EMAIL} --user (id -u):(id -u) \
-	--name toolbox-${USER} ghcr.io/metabsd/toolbox-container:latest \
+	--name toolbox-${USER} ghcr.io/metabsd/toolbox-container:main \
 	&& sleep 1 \
 	&& docker exec -it toolbox-${USER} fish
 
