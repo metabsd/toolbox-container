@@ -1,10 +1,10 @@
 SHELL = /usr/bin/fish
 
-# # User settings
-# CONTAINER_USER = username
-# CONTAINER_GROUP = group
-# CONTAINER_UID = 1234
-# CONTAINER_GID = 1234
+# User settings
+CONTAINER_USER = marbe020
+CONTAINER_GROUP = secrole-unix-admin
+CONTAINER_UID = 10286
+CONTAINER_GID = 10000
 
 # Velero Version
 VELERO_VER = "1.12.2"
