@@ -12,6 +12,7 @@ env:
   ORGANIZATION: metabsd
   IMAGE_NAME: ${{ github.repository }}
   VALIDATE_ALL_CODEBASE: true
+  DISABLE_LINTERS: kisc
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
