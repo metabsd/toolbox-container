@@ -2,6 +2,8 @@ FROM docker.io/fedora:39
 
 ARG USERNAME
 
+ENV TZ="America/Toronto"
+
 RUN ["dnf", "install", "--assumeyes", "make", "fish" ]
 
 RUN ["mkdir", "-p", "/tmp/"]
@@ -30,9 +32,6 @@ RUN [ "make", \
 # Install Operator SDK
 RUN [ "make", \
     "install-operator-sdk" ]
-
-# DateTime
-RUN [ "timedatectl", "set-timezone", "America/Toronto" ]
 
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
