@@ -63,13 +63,13 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
-        env:
-          USERNAME: ${{ secrets.CONTAINER_USER }}
-          CONTAINER_USER: ${{ secrets.CONTAINER_USER }}
-          CONTAINER_GROUP: ${{ secrets.CONTAINER_GROUP }}
-          CONTAINER_UID: ${{ secrets.CONTAINER_UID }}
-          CONTAINER_GID: ${{ secrets.CONTAINER_GID }}
         with:
+          build-args: |
+            USERNAME=${{ secrets.CONTAINER_USER }}
+            CONTAINER_USER=${{ secrets.CONTAINER_USER }}
+            CONTAINER_GROUP=${{ secrets.CONTAINER_GROUP }}
+            CONTAINER_UID=${{ secrets.CONTAINER_UID }}
+            CONTAINER_GID=${{ secrets.CONTAINER_GID }}
           context: .
           file: ./Dockerfile
           push: true
