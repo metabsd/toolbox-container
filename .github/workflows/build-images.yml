@@ -9,7 +9,6 @@ on:
       - synchronize
 env:
   REGISTRY: ghcr.io
-  ORGANIZATION: metabsd
   IMAGE_NAME: ${{ github.repository }}
   VALIDATE_ALL_CODEBASE: true
   ENABLE_LINTERS: bash-exec,shellcheck,gitleaks,semgrep
@@ -59,7 +58,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.ORGANIZATION }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
