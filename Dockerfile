@@ -26,7 +26,9 @@ RUN [ "make", \
     "install-sealed-secret", \
     "install-velero", \
     "install-openshift-cli", \
-    "install-helm" ]
+    "install-helm", \
+    "install-etcd", \
+    "install-dust" ]
     # update-ca-certificates
 
 # Install Operator SDK

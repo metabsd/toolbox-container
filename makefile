@@ -25,8 +25,12 @@ OC_VER = "4.14"
 # Helm Version
 HELM_VERSION = "3.13.0"
 
-# PowerShell
-PWSH_VER = "7.4.1"
+# ETCD Cli Version
+ETCD_VER=v3.5.12
+
+# DUST Version
+DUST_VER=v0.9.0
+
 
 install-packages:
 	rpm --import https://packages.microsoft.com/keys/microsoft.asc \
@@ -34,11 +38,12 @@ install-packages:
 	&& dnf install \
 		--assumeyes \
 		--setopt install_weak_deps=False \
-		ca-certificates \
+		ansible \
 		binutils \
 		bind-utils \
 		blktrace \
 		bzip2 \
+		ca-certificates \
 		curl \
 		ddrescue \
 		diffutils \
@@ -49,9 +54,9 @@ install-packages:
 		file \
 		findutils \
 		fio \
-		golang \
 		gdb \
 		git \
+		golang \
 		httpd \
 		haproxy \
 		hostname \
@@ -116,6 +121,13 @@ clean-up:
 	&& sudo dnf clean all \
 	&& printf "✅ Cleanup completed\n"
 
+install-dust:
+	/tmp/dust.sh ${DUST_VER} \
+	&& printf "✅ Dust installed\n"
+
+install-etcd:
+	/tmp/etcd.sh ${ETCD_VER} \
+	&& printf "✅ ETCD installed\n"
 
 install-butane:
 	/tmp/butane.sh \
