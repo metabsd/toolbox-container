@@ -33,12 +33,14 @@ DUST_VER=v0.9.0
 
 
 install-packages:
-	rpm --import https://packages.microsoft.com/keys/microsoft.asc \
+	dnf upgrade --assumeyes \
+	&& rpm --import https://packages.microsoft.com/keys/microsoft.asc \
 	&& dnf install --assumeyes https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm \
 	&& dnf install \
 		--assumeyes \
 		--setopt install_weak_deps=False \
 		ansible \
+		bat \
 		binutils \
 		bind-utils \
 		blktrace \
@@ -54,6 +56,7 @@ install-packages:
 		file \
 		findutils \
 		fio \
+		fzf \
 		gdb \
 		git \
 		golang \
@@ -87,14 +90,13 @@ install-packages:
 		socat \
 		strace \
 		symlinks \
+		tox \
 		tcpdump \
 		telnet \
 		unzip \
 		vim \
 		wget \
 		wireshark-cli \
-		fzf \
-		bat \
 		xz
 
 add-user:
